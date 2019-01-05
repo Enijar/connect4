@@ -1,5 +1,5 @@
-import io from 'socket.io-client'
 import Config from './Config'
+import ws from './ws'
 
 export default class Game {
   constructor (canvas) {
@@ -11,19 +11,13 @@ export default class Game {
   }
 
   start () {
-    this.io = io();
-    this.io.on('connection', socket => {
-      console.info('connection', socket.id);
-
-      socket.on('disconnect', () => {
-        console.info('disconnect', socket.id);
-      });
-    });
+    ws.connect();
     this.render();
   }
 
   stop () {
     this.animationFrame && cancelAnimationFrame(this.animationFrame);
+    ws.disconnect();
   }
 
   render = () => {
