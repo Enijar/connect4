@@ -17,7 +17,6 @@ export default class GameContainer extends Component {
   render () {
     return (
       <div className="GameContainer">
-        <h1>Test</h1>
         <canvas ref={this.canvas}/>
       </div>
     );

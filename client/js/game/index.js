@@ -8,10 +8,17 @@ export default class Game {
     this.canvas.width = Config.width;
     this.canvas.height = Config.height;
     this.animationFrame = null;
-    this.io = io();
   }
 
   start () {
+    this.io = io();
+    this.io.on('connection', socket => {
+      console.info('connection', socket.id);
+
+      socket.on('disconnect', () => {
+        console.info('disconnect', socket.id);
+      });
+    });
     this.render();
   }
 
