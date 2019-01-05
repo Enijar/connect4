@@ -11,5 +11,11 @@ export default {
   board: {
     width: 800,
     height: 800,
+    slots: {
+      offset: 2,
+      r: 100,
+      x: 7,
+      y: 6,
+    },
   },
 }
