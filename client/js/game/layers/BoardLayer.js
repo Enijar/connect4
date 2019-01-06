@@ -1,4 +1,5 @@
 import BaseLayer from './BaseLayer'
+import Config from '../Config'
 
 export default class BoardLayer extends BaseLayer {
   x = 50;
@@ -37,20 +38,26 @@ export default class BoardLayer extends BaseLayer {
     this.dropChip();
   };
 
-  dropChip() {
+  dropChip () {
     // TODO: Update game state
     this.chipVelocity = 5;
   }
 
-  resetChip() {
+  resetChip () {
     this.chip.x = 0;
     this.chip.y = (this.board.height + this.chip.height) * -this.board.anchor.y;
   }
 
   moveChip (x) {
-    const maxLeft = (this.board.width - this.chip.width) * -this.board.anchor.x;
-    const maxRight = (this.board.width - this.chip.width) * this.board.anchor.x;
-    this.chip.x = Math.max(maxLeft, Math.min(maxRight, x));
+    const {slots} = Config.board;
+    const centerX = (this.board.width - this.chip.width - (slots.paddingX * 2));
+    const startX = centerX * -this.board.anchor.x;
+    const endX = centerX * this.board.anchor.x;
+    const mouseX = Math.max(startX, Math.min(endX, x));
+    const offsetX = this.chip.width + slots.gap;
+    const boardWidth = (this.board.width - (slots.paddingX * 2)) * this.board.anchor.x;
+    const slotNumber = Math.floor((mouseX + boardWidth) / (((endX + boardWidth) + (slots.gap * (slots.total - 1))) / slots.total));
+    this.chip.x = startX + (offsetX * slotNumber);
   }
 
   tick (delta) {

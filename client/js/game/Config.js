@@ -13,8 +13,10 @@ export default {
     width: 840,
     height: 700,
     slots: {
-      size: 100,
-      offsetX: 38,
+      total: 7,
+      width: 100,
+      paddingX: 38,
+      gap: 10,
     },
   },
   assets: {
