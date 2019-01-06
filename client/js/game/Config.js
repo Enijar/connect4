@@ -16,6 +16,7 @@ export default {
       total: 7,
       width: 100,
       paddingX: 38,
+      paddingY: 25,
       gap: 10,
     },
   },

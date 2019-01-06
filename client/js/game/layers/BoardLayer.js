@@ -61,7 +61,9 @@ export default class BoardLayer extends BaseLayer {
   }
 
   tick (delta) {
+    const centerY = (this.board.height - this.chip.height - (Config.board.slots.paddingY * 2));
+    const endY = centerY * this.board.anchor.y;
     // TODO: Implement drop animation
-    // this.chip.y += this.chipVelocity * delta;
+    this.chip.y = Math.min(endY, this.chip.y + (this.chipVelocity * delta));
   }
 }
