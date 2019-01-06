@@ -91,8 +91,9 @@ export default class BoardLayer extends BaseLayer {
     const endX = centerX * this.board.anchor.x;
     const mouseX = Math.max(startX, Math.min(endX, x));
     const offsetX = this.chip.width + slots.gap;
-    const boardWidth = (this.board.width - (slots.paddingX * 2)) * this.board.anchor.x;
-    const slotIndex = Math.floor((mouseX + boardWidth) / (((endX + boardWidth) + (slots.gap * (slots.totalX - 1))) / slots.totalX));
+    const boardWidth = (this.board.width * this.board.anchor.x) - (slots.paddingX * 2);
+    const chipInterval = ((endX + boardWidth) + (slots.gap * (slots.totalX - 1))) / slots.totalX;
+    const slotIndex = Math.floor((mouseX + boardWidth) / chipInterval);
     this.state.slotIndex = slotIndex;
     this.chip.x = startX + (offsetX * slotIndex);
   }
