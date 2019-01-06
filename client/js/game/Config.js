@@ -17,4 +17,9 @@ export default {
       offsetX: 38,
     },
   },
+  assets: {
+    board: 'img/board.png',
+    chip_red: 'img/chip_red.png',
+    chip_yellow: 'img/chip_yellow.png',
+  },
 }

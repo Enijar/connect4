@@ -12,7 +12,23 @@ export default class Game {
     this.layers = [];
   }
 
-  start () {
+  loadAssets() {
+    // TODO: Handle asset load errors
+    return new Promise(resolve => {
+      for (let asset in Config.assets) {
+        if (!Config.assets.hasOwnProperty(asset)) {
+          continue;
+        }
+        PIXI.loader.add(asset, Config.assets[asset]);
+      }
+      PIXI.loader.once('complete', resolve);
+      PIXI.loader.load();
+    });
+  }
+
+  async start () {
+    await this.loadAssets();
+
     for (let layer in layers) {
       if (!layers.hasOwnProperty(layer)) {
         continue;
