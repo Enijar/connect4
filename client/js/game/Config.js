@@ -13,7 +13,8 @@ export default {
     width: 840,
     height: 700,
     slots: {
-      total: 7,
+      totalX: 7,
+      totalY: 6,
       width: 100,
       paddingX: 38,
       paddingY: 25,
