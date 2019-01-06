@@ -1,46 +1,42 @@
+import 'pixi.js'
 import Config from './Config'
+import Interaction from './Interaction'
 import ws from './ws'
-import renderers from './renderers/index'
+import layers from './layers/index'
 
 export default class Game {
-  constructor (canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
-    this.canvas.width = Config.width;
-    this.canvas.height = Config.height;
-    this.animationFrame = null;
-    this.renderers = [];
+  constructor (container) {
+    this.container = container;
+    this.interaction = new Interaction(this.container);
+    this.game = new PIXI.Application(Config.width, Config.height, {backgroundColor: Config.background});
+    this.layers = [];
   }
 
   start () {
+    for (let layer in layers) {
+      if (!layers.hasOwnProperty(layer)) {
+        continue;
+      }
+      const instance = new layers[layer](this.game);
+      instance.init();
+      this.layers.push(instance);
+    }
+
     ws.connect();
-
-    // Instantiate renderers
-    this.renderers.push(new renderers.board());
-
-    this.render();
+    this.container.appendChild(this.game.view);
+    this.interaction.start();
+    this.game.ticker.add(this.update);
   }
 
   stop () {
-    this.animationFrame && cancelAnimationFrame(this.animationFrame);
     ws.disconnect();
+    this.container.removeChild(this.game.view);
+    this.interaction.stop();
   }
 
-  render = () => {
-    this.animationFrame = requestAnimationFrame(this.render);
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.renderers.sort((a, b) => a.layer - b.layer);
-
-    for (let i = 0; i < this.renderers.length; i++) {
-      this.renderers[i].update();
-      this.renderers[i].render();
-      this.ctx.drawImage(
-        this.renderers[i].canvas,
-        this.renderers[i].x,
-        this.renderers[i].y,
-        this.renderers[i].width,
-        this.renderers[i].height,
-      );
+  update = delta => {
+    for (let i = 0; i < this.layers.length; i++) {
+      this.layers[i].tick(delta);
     }
-  };
+  }
 }

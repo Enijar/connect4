@@ -4,18 +4,17 @@ export default {
   ...sharedConfig,
   width: 900,
   height: 900,
+  background: 0xeeeeee,
   chip: {
     width: 50,
     height: 50,
   },
   board: {
-    width: 800,
-    height: 800,
+    width: 840,
+    height: 700,
     slots: {
-      offset: 2,
-      r: 100,
-      x: 7,
-      y: 6,
+      size: 100,
+      offsetX: 38,
     },
   },
 }

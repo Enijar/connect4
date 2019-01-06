@@ -1,6 +1,8 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const postCSSLoaderPlugins = [
   require('autoprefixer')({
@@ -19,14 +21,17 @@ if (process.env.NODE_ENV === 'production') {
   postCSSLoaderPlugins.push(require('cssnano')({preset: 'default'}));
 }
 
+const SRC_PATH = path.resolve(__dirname);
+const PUBLIC_PATH = path.resolve(__dirname, '..', 'public');
+
 module.exports = {
   entry: {
-    'js/index.js': path.resolve(__dirname, 'js', 'index.js'),
-    'css/index.css': path.resolve(__dirname, 'sass', 'index.scss'),
+    'js/index.js': path.resolve(SRC_PATH, 'js', 'index.js'),
+    'css/index.css': path.resolve(SRC_PATH, 'sass', 'index.scss'),
   },
   output: {
     filename: '[name]',
-    path: path.resolve(__dirname, '..', 'public'),
+    path: PUBLIC_PATH,
   },
   module: {
     rules: [
@@ -70,6 +75,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin([PUBLIC_PATH]),
     new HtmlWebpackPlugin({
       inject: true,
       hash: true,
@@ -87,6 +93,12 @@ module.exports = {
       filename: '[name]',
       allChunks: true,
     }),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(SRC_PATH, 'img'),
+        to: path.join(PUBLIC_PATH, 'img'),
+      },
+    ]),
   ],
   devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
 };

@@ -2,11 +2,11 @@ import React, { Component, createRef } from 'react'
 import Game from '../../game/index'
 
 export default class GameContainer extends Component {
-  canvas = createRef();
+  container = createRef();
   game = null;
 
   componentDidMount () {
-    this.game = new Game(this.canvas.current);
+    this.game = new Game(this.container.current);
     this.game.start();
   }
 
@@ -15,10 +15,6 @@ export default class GameContainer extends Component {
   }
 
   render () {
-    return (
-      <div className="GameContainer">
-        <canvas ref={this.canvas}/>
-      </div>
-    );
+    return <div className="GameContainer" ref={this.container}/>;
   }
 }
