@@ -1,4 +1,3 @@
-import 'pixi.js'
 import BaseLayer from './BaseLayer'
 
 export default class BoardLayer extends BaseLayer {
