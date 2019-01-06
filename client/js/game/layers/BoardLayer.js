@@ -7,17 +7,26 @@ export default class BoardLayer extends BaseLayer {
   chipVelocity = 0;
   board = new PIXI.Sprite(PIXI.loader.resources['board'].texture);
   chip = new PIXI.Sprite(PIXI.loader.resources['chip_red'].texture);
+  droppedChip = new PIXI.Sprite(PIXI.loader.resources['chip_red'].texture);
+  chips = new PIXI.Container();
 
   init () {
     this.chip.anchor.set(0.5);
+    this.droppedChip.anchor.set(0.5);
     this.board.anchor.set(0.5);
+
     this.board.x = this.game.screen.width / 2;
     this.board.y = this.game.screen.height / 2;
     this.board.interactive = true;
+    this.chips.width = this.board.width;
+    this.chips.height = this.board.height;
+    this.chips.x = this.board.x;
+    this.chips.y = this.board.y;
 
     this.board.on('mousemove', this.handleMouseMove);
     this.board.on('mousedown', this.handleMouseDown);
     this.board.addChild(this.chip);
+    this.game.stage.addChild(this.chips);
     this.game.stage.addChild(this.board);
 
     this.resetChip();
@@ -41,6 +50,11 @@ export default class BoardLayer extends BaseLayer {
   dropChip () {
     // TODO: Update game state
     this.chipVelocity = 5;
+    const chip = new PIXI.Sprite(PIXI.loader.resources['chip_red'].texture);
+    chip.anchor.set(0.5);
+    chip.x = this.chip.x;
+    chip.y = this.chip.y;
+    this.chips.addChild(chip);
   }
 
   resetChip () {
@@ -61,9 +75,11 @@ export default class BoardLayer extends BaseLayer {
   }
 
   tick (delta) {
-    const centerY = (this.board.height - this.chip.height - (Config.board.slots.paddingY * 2));
+    const centerY = (this.board.height - this.droppedChip.height - (Config.board.slots.paddingY * 2));
     const endY = centerY * this.board.anchor.y;
-    // TODO: Implement drop animation
-    this.chip.y = Math.min(endY, this.chip.y + (this.chipVelocity * delta));
+
+    this.chips.children.forEach(chip => {
+      chip.y = Math.min(endY, chip.y + (this.chipVelocity * delta));
+    });
   }
 }
