@@ -1,0 +1,27 @@
+{
+  "name": "connect4",
+  "version": "0.0.0",
+  "description": "A fun browser game where you have to connect 4 of your own chips in a row, playing against an opponent.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enijar/connect4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Enijar/connect4/issues"
+  },
+  "homepage": "https://github.com/Enijar/connect4#readme",
+  "devDependencies": {
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}
